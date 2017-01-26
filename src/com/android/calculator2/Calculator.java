@@ -41,6 +41,7 @@ import android.view.ViewGroupOverlay;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
+import android.util.Log;
 
 import com.android.calculator2.CalculatorEditText.OnTextSizeChangeListener;
 import com.android.calculator2.CalculatorExpressionEvaluator.EvaluateCallback;
@@ -53,6 +54,10 @@ public class Calculator extends Activity
     // instance state keys
     private static final String KEY_CURRENT_STATE = NAME + "_currentState";
     private static final String KEY_CURRENT_EXPRESSION = NAME + "_currentExpression";
+
+    // debug variables
+    private static String TAG = "Calculator";
+    private boolean DEBUG = false;
 
     /**
      * Constant for an invalid resource id.
@@ -198,12 +203,18 @@ public class Calculator extends Activity
 
     @Override
     public void onBackPressed() {
+	if (DEBUG) Log.d(TAG, "onBackPressed():");
         if (mPadViewPager == null || mPadViewPager.getCurrentItem() == 0) {
             // If the user is currently looking at the first pad (or the pad is not paged),
             // allow the system to handle the Back button.
-            super.onBackPressed();
+            if (DEBUG) Log.d(TAG, "onBackPressed(): user looking at first pad/pad not paged" + 
+                                  " allow system to handle back button" + 
+                                  " Calling parent onBackPressed");
+            super.onBackPressed();            
+            if (DEBUG) Log.d(TAG, "onBackPressed(): Returned from calling parent onBackPressed");
         } else {
             // Otherwise, select the previous pad.
+            if (DEBUG) Log.d(TAG, "onBackPressed(): select previous pad");
             mPadViewPager.setCurrentItem(mPadViewPager.getCurrentItem() - 1);
         }
     }
